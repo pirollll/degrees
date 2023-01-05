@@ -94,7 +94,7 @@ def shortest_path(source, target):
 
     # TODO
     # Initialize frontier to just the starting position
-    start = Node(state=source, parent=None, action=None)
+    start = Node(person=source, parent=None, movie=None)
     # QueueFrontier for BFS
     frontier = QueueFrontier()
     frontier.add(start)
@@ -112,24 +112,24 @@ def shortest_path(source, target):
         node = frontier.remove()
 
         # add to explored, to avoid cycle
-        explored.add((node.action, node.state))
+        explored.add((node.movie, node.person))
 
         # Add neighbors to frontier
-        nextNodes = neighbors_for_person(node.state)
+        nextNodes = neighbors_for_person(node.person)
         for movie_id, person_id in nextNodes:
-            if ((movie_id, person_id) not in explored) and (not frontier.contains_state(person_id)):
+            if ((movie_id, person_id) not in explored) and (not frontier.contains_person(person_id)):
 
                 # Check if Goal      
                 if (person_id == target):
                     path = [(movie_id, person_id)]
                     while node.parent is not None:
-                        path.append((node.action, node.state))
+                        path.append((node.movie, node.person))
                         node = node.parent
                     path.reverse()
                     return path
                 
                 # add node to frontier
-                new = Node(state=person_id, parent=node, action=movie_id)
+                new = Node(person=person_id, parent=node, movie=movie_id)
                 frontier.add(new)
         print('.')
 
